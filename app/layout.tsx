@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "@/components/providers";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildJsonLd } from "@/lib/seo";
 import { site } from "@/lib/content";
 import "./globals.css";
 
@@ -21,6 +21,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en">
             <body className="bg-white text-neutral-900 antialiased">
                 <Providers>{children}</Providers>
+                {/* Structured data for search and answer engines. Rendered from the same content
+                    contract the page uses, so it cannot describe a business the page does not. */}
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd("LocalBusiness")) }}
+                />
             </body>
         </html>
     );

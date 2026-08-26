@@ -1,5 +1,6 @@
 import { site } from "@/lib/content";
 import { ContactForm } from "@/components/contact-form";
+import { contactDeliveryConfigured } from "@/lib/services/contact";
 
 // Call and email stay FIRST and biggest: a trades customer phones, and the form is the
 // out-of-hours path rather than a replacement for the number.
@@ -41,7 +42,7 @@ export function Contact() {
                     <p className="mt-2 mb-6 text-sm text-neutral-500">
                         Best for a quote you do not need answering tonight.
                     </p>
-                    <ContactForm />
+                    {contactDeliveryConfigured() && <ContactForm />}
                 </div>
             </div>
         </section>
