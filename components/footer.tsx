@@ -7,7 +7,7 @@ export function Footer() {
                 <p>
                     © {new Date().getFullYear()} {site.business.name}
                 </p>
-                <p>{site.business.address}</p>
+                {site.business.location && <p>{site.business.location}</p>}
             </div>
         </footer>
     );

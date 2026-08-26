@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 /* Brand tokens (Tailwind v4 @theme) — a warm amber for a trades brand, deliberately
-   different from the coaching template's teal. The agent changes these to re-skin the
-   site; utilities like bg-brand / text-brand read from here. */
+   different from the coaching template's teal. The agent changes these three values to
+   re-skin the site; utilities like bg-brand / text-brand / border-brand read from here,
+   and an opacity modifier (border-brand/20) derives a tint without a fourth token.
+
+   NO COMPONENT HARDCODES A PALETTE COLOUR for a branded surface. One that does still
+   looks fine today and then survives the re-skin, leaving a single stray warm line on an
+   otherwise-changed page — which is how this promise stops being true. Neutrals and the
+   red of an error message are not brand, and are left as palette classes on purpose. */
 @theme inline {
     --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
         Helvetica, Arial, sans-serif;
