@@ -1,29 +1,42 @@
 import { site } from "@/lib/content";
+import { Container, Section } from "@/lib/ui/container";
+import { Reveal, Stagger, StaggerItem } from "@/lib/ui/reveal";
+import { SectionHeading } from "@/components/section-heading";
 
+// Opening hours, as a table with aligned numerals.
+//
+// `tabular-nums` is doing real work: proportional digits make a column of times look ragged, and
+// a ragged column of times is harder to scan than a tidy one — which is the whole job of this
+// section.
 export function Hours() {
     const h = site.hours;
     if (!h) return null;
     return (
-        <section id="hours" className="mx-auto max-w-6xl px-6 py-20">
-            <div className="grid gap-10 md:grid-cols-2">
-                <div>
-                    <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{h.title}</h2>
-                    {h.note && <p className="mt-3 max-w-md text-neutral-600">{h.note}</p>}
-                    {/* Was `business.address`; the shared contract calls it `location`, which is
-                        free text — a street address here, a city on a template that has no yard. */}
-                    {site.business.location && (
-                        <p className="mt-6 text-sm text-neutral-500">{site.business.location}</p>
-                    )}
+        <Section id="hours">
+            <Container>
+                <div className="grid gap-10 md:grid-cols-[1fr_1.2fr] md:items-start">
+                    <SectionHeading title={h.title} />
+                    <div>
+                        <Stagger className="divide-y divide-line border-y border-line" gap="base">
+                            {h.days.map((d) => (
+                                <StaggerItem
+                                    key={d.day}
+                                    travel="sm"
+                                    className="flex items-baseline justify-between gap-6 py-3.5"
+                                >
+                                    <span className="font-medium text-fg">{d.day}</span>
+                                    <span className="tabular-nums text-fg-muted">{d.open}</span>
+                                </StaggerItem>
+                            ))}
+                        </Stagger>
+                        {h.note ? (
+                            <Reveal travel="sm">
+                                <p className="mt-5 text-sm text-fg-subtle">{h.note}</p>
+                            </Reveal>
+                        ) : null}
+                    </div>
                 </div>
-                <dl className="divide-y divide-neutral-200 border-y border-neutral-200">
-                    {h.days.map((d) => (
-                        <div key={d.day} className="flex items-center justify-between gap-4 py-3">
-                            <dt className="text-sm font-medium text-neutral-800">{d.day}</dt>
-                            <dd className="text-sm text-neutral-600">{d.open}</dd>
-                        </div>
-                    ))}
-                </dl>
-            </div>
-        </section>
+            </Container>
+        </Section>
     );
 }

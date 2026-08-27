@@ -1,26 +1,30 @@
 import { site } from "@/lib/content";
+import { Container, Section } from "@/lib/ui/container";
+import { Stagger, StaggerItem } from "@/lib/ui/reveal";
+import { SectionHeading } from "@/components/section-heading";
 
-// "Do you cover my area?" is the first question a local customer asks, so it gets its own
-// section rather than a line in the footer.
+// Where the business actually covers.
+//
+// A trades customer's first question is "do you come to me", and a site that makes them read an
+// About page to find out has already lost them. It is a plain list of names rather than a map:
+// people scan for their own area, and a map makes that harder, not easier.
 export function Areas() {
     const a = site.areas;
     if (!a) return null;
     return (
-        <section id="areas" className="border-y border-neutral-200 bg-neutral-50">
-            <div className="mx-auto max-w-6xl px-6 py-20">
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{a.title}</h2>
-                {a.subtitle && <p className="mt-3 max-w-2xl text-neutral-600">{a.subtitle}</p>}
-                <ul className="mt-8 flex flex-wrap gap-2">
-                    {a.items.map((area) => (
-                        <li
-                            key={area}
-                            className="rounded-full border border-neutral-300 bg-white px-4 py-1.5 text-sm text-neutral-700"
-                        >
-                            {area}
-                        </li>
+        <Section id="areas" className="border-y border-line bg-surface-2">
+            <Container>
+                <SectionHeading title={a.title} subtitle={a.subtitle} />
+                <Stagger className="mt-10 flex flex-wrap gap-2.5" gap="base">
+                    {a.items.map((name) => (
+                        <StaggerItem key={name} travel="sm">
+                            <span className="inline-block rounded-[var(--radius-control)] border border-line bg-surface px-4 py-2 text-sm font-medium text-fg">
+                                {name}
+                            </span>
+                        </StaggerItem>
                     ))}
-                </ul>
-            </div>
-        </section>
+                </Stagger>
+            </Container>
+        </Section>
     );
 }

@@ -1,37 +1,37 @@
+import Link from "next/link";
 import { site } from "@/lib/content";
+import { Container } from "@/lib/ui/container";
 
-// A local trade's nav carries the phone number, because calling is the primary action.
+// Site navigation. Multi-page now, so every entry is a ROUTE and next/link handles it — the
+// single-page version used in-page anchors, which silently do nothing from /work/anything.
+//
+// Sticky with a translucent backdrop rather than a solid bar: on a gallery-first site the work
+// should keep showing through the chrome, which is the whole reason the chrome is this quiet.
 export function Nav() {
-    const { name, tagline, phone, phoneHref } = site.business;
     return (
-        <header className="sticky top-0 z-30 border-b border-neutral-200 bg-white/90 backdrop-blur">
-            <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
-                <a href="#" className="flex min-w-0 flex-col leading-tight">
-                    <span className="truncate text-base font-bold tracking-tight">{name}</span>
-                    <span className="truncate text-xs text-neutral-500">{tagline}</span>
-                </a>
-                <nav className="hidden gap-6 md:flex">
-                    {site.nav.map((n) => (
-                        <a
-                            key={n.href}
-                            href={n.href}
-                            className="text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900"
-                        >
-                            {n.label}
-                        </a>
-                    ))}
-                </nav>
-                {/* Both halves or neither. A tel: link built from a missing href dials the string
-                    "undefined", which looks like a working button right up until someone taps it. */}
-                {phone && phoneHref && (
-                    <a
-                        href={`tel:${phoneHref}`}
-                        className="shrink-0 rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-dark"
+        <header className="sticky top-0 z-50 border-b border-line/70 bg-surface/80 backdrop-blur-md">
+            <Container>
+                <nav className="flex h-16 items-center justify-between gap-6">
+                    <Link
+                        href="/"
+                        className="font-display text-sm font-semibold tracking-[-0.01em] text-fg transition-opacity hover:opacity-70"
                     >
-                        {phone}
-                    </a>
-                )}
-            </div>
+                        {site.business.name}
+                    </Link>
+                    <ul className="flex items-center gap-7">
+                        {site.nav.map((item) => (
+                            <li key={item.href}>
+                                <Link
+                                    href={item.href}
+                                    className="text-sm text-fg-muted transition-colors duration-[var(--motion-fast)] hover:text-fg"
+                                >
+                                    {item.label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+            </Container>
         </header>
     );
 }

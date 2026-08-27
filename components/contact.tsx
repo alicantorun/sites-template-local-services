@@ -1,50 +1,55 @@
 import { site } from "@/lib/content";
+import { Container, Section } from "@/lib/ui/container";
+import { Reveal } from "@/lib/ui/reveal";
+import { SectionHeading } from "@/components/section-heading";
 import { ContactForm } from "@/components/contact-form";
 import { contactDeliveryConfigured } from "@/lib/services/contact";
 
-// Call and email stay FIRST and biggest: a trades customer phones, and the form is the
-// out-of-hours path rather than a replacement for the number.
-//
-// So the number keeps the full width and the loudest button on the page, and the form sits under
-// it in a narrow column with a quieter heading. That ordering is the point of the section, not a
-// layout preference — reversing it would put a same-working-day reply in front of someone whose
-// kitchen is filling with water.
+// The contact section. The mailto and the phone number come FIRST and work with no JavaScript;
+// the form is the second way to make contact, never the only one.
 export function Contact() {
-    const c = site.contact;
-    const { phone, phoneHref, email } = site.business;
     return (
-        <section id="contact" className="border-t border-neutral-200 bg-neutral-900">
-            <div className="mx-auto max-w-6xl px-6 py-20">
-                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                    {c.title}
-                </h2>
-                <p className="mt-3 max-w-xl text-neutral-300">{c.subtitle}</p>
-                <div className="mt-8 flex flex-wrap items-center gap-3">
-                    {phone && phoneHref && (
-                        <a
-                            href={`tel:${phoneHref}`}
-                            className="rounded-full bg-brand px-8 py-4 text-base font-bold text-white transition-colors hover:bg-brand-dark"
-                        >
-                            Call {phone}
-                        </a>
-                    )}
-                    <a
-                        href={`mailto:${email}`}
-                        className="rounded-full border border-neutral-600 px-6 py-3 text-sm font-semibold text-neutral-100 transition-colors hover:border-white"
-                    >
-                        Email us
-                    </a>
+        <Section id="contact" className="border-t border-line">
+            <Container>
+                <div className="grid gap-14 md:grid-cols-2">
+                    <Reveal>
+                        <div>
+                            <SectionHeading
+                                title={site.contact.title}
+                                subtitle={site.contact.subtitle}
+                            />
+                            <div className="mt-8 space-y-2">
+                                <a
+                                    href={`mailto:${site.business.email}`}
+                                    className="block text-lg text-fg underline decoration-line underline-offset-4 transition-colors hover:decoration-brand"
+                                >
+                                    {site.business.email}
+                                </a>
+                                {site.business.phone ? (
+                                    <a
+                                        href={`tel:${site.business.phoneHref ?? site.business.phone}`}
+                                        className="block text-lg text-fg underline decoration-line underline-offset-4 transition-colors hover:decoration-brand"
+                                    >
+                                        {site.business.phone}
+                                    </a>
+                                ) : null}
+                                {site.business.location ? (
+                                    <p className="pt-2 text-sm text-fg-subtle">{site.business.location}</p>
+                                ) : null}
+                            </div>
+                        </div>
+                    </Reveal>
+                    {/* The form renders only when delivery is actually configured. A form that
+                        silently drops a visitor's message is worse than no form. */}
+                    {contactDeliveryConfigured() ? (
+                        <Reveal delay={0.1}>
+                            <div className="rounded-[var(--radius-card)] border border-line bg-surface-2 p-8">
+                                <ContactForm />
+                            </div>
+                        </Reveal>
+                    ) : null}
                 </div>
-                <div className="mt-14 max-w-xl border-t border-neutral-800 pt-10">
-                    <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-400">
-                        Or leave the details
-                    </h3>
-                    <p className="mt-2 mb-6 text-sm text-neutral-500">
-                        Best for a quote you do not need answering tonight.
-                    </p>
-                    {contactDeliveryConfigured() && <ContactForm />}
-                </div>
-            </div>
-        </section>
+            </Container>
+        </Section>
     );
 }

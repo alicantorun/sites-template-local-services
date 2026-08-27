@@ -1,51 +1,76 @@
 import { site } from "@/lib/content";
+import { Container } from "@/lib/ui/container";
+import { Button } from "@/lib/ui/button";
+import { Reveal } from "@/lib/ui/reveal";
+import { Grid } from "@/components/visual";
 
+// UTILITARIAN CONFIDENT. A trades customer arrives wanting four facts: what you do, where you
+// cover, when you are open, and the phone number. So the hero puts the CALL first and the stats
+// immediately under it, and the type is heavy rather than large — heavy reads as competent at a
+// glance, where large just takes up the screen.
+//
+// Note the reveal delays: the eyebrow, headline and subtitle arrive in reading order about a tenth
+// of a second apart. Long enough to read as deliberate, short enough that a returning visitor is
+// not made to wait for their own site.
 export function Hero() {
-    const h = site.hero;
     return (
-        <section className="border-b border-neutral-200 bg-brand-tint">
-            <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
-                <p className="text-sm font-semibold uppercase tracking-widest text-brand">
-                    {h.eyebrow}
-                </p>
-                <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">
-                    {h.title}
-                </h1>
-                <p className="mt-5 max-w-xl text-lg leading-relaxed text-neutral-700">
-                    {h.subtitle}
-                </p>
-                <div className="mt-8 flex flex-wrap gap-3">
-                    <a
-                        href={h.primaryCta.href}
-                        className="rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark"
-                    >
-                        {h.primaryCta.label}
-                    </a>
-                    {h.secondaryCta && (
-                        <a
-                            href={h.secondaryCta.href}
-                            className="rounded-full border border-neutral-400 px-6 py-3 text-sm font-semibold text-neutral-800 transition-colors hover:border-neutral-900"
-                        >
-                            {h.secondaryCta.label}
-                        </a>
-                    )}
+        <section className="relative isolate overflow-hidden border-b border-line">
+            <Grid className="opacity-40" />
+            <Container className="relative py-24 md:py-36">
+                <div className="max-w-3xl">
+                    <Reveal travel="sm" duration="fast">
+                        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-fg-subtle">
+                            {site.hero.eyebrow}
+                        </p>
+                    </Reveal>
+                    <Reveal delay={0.08}>
+                        <h1 className="mt-6 font-display text-[clamp(2.1rem,4.6vw,3.6rem)] leading-[1.04] font-bold tracking-[-0.028em] text-balance text-fg">
+                            {site.hero.title}
+                        </h1>
+                    </Reveal>
+                    <Reveal delay={0.16}>
+                        <p className="mt-7 max-w-2xl text-lg leading-relaxed text-fg-muted">
+                            {site.hero.subtitle}
+                        </p>
+                    </Reveal>
+                    <Reveal delay={0.24} travel="sm">
+                        <div className="mt-10 flex flex-wrap items-center gap-3">
+                            <Button href={site.hero.primaryCta.href} size="lg">
+                                {site.hero.primaryCta.label}
+                            </Button>
+                            {site.business.phone ? (
+                                <Button
+                                    href={`tel:${site.business.phoneHref ?? site.business.phone}`}
+                                    variant="secondary"
+                                    size="lg"
+                                >
+                                    {site.business.phone}
+                                </Button>
+                            ) : site.hero.secondaryCta ? (
+                                <Button href={site.hero.secondaryCta.href} variant="secondary" size="lg">
+                                    {site.hero.secondaryCta.label}
+                                </Button>
+                            ) : null}
+                        </div>
+                    </Reveal>
                 </div>
-                {/* This divider used to carry a hardcoded amber border utility, which survives
-                    a brand-token edit and leaves one warm line across an otherwise re-skinned
-                    page. It reads from --color-brand now, so the promise in globals.css holds.
-                    (Naming the old utility here would be enough to keep it: Tailwind v4 scans
-                    comments too, and emitted the dead rule until this line was reworded.) */}
-                {h.stats && (
-                    <dl className="mt-14 flex flex-wrap gap-x-12 gap-y-6 border-t border-brand/20 pt-8">
-                        {h.stats.map((s) => (
-                            <div key={s.label}>
-                                <dt className="text-2xl font-bold text-neutral-900">{s.value}</dt>
-                                <dd className="text-sm text-neutral-600">{s.label}</dd>
-                            </div>
-                        ))}
-                    </dl>
-                )}
-            </div>
+                {site.hero.stats?.length ? (
+                    <Reveal delay={0.32} travel="sm">
+                        <dl className="mt-16 flex flex-wrap gap-x-14 gap-y-6 border-t border-line pt-8">
+                            {site.hero.stats.map((s) => (
+                                <div key={s.label}>
+                                    <dt className="font-display text-2xl font-semibold tabular-nums tracking-[-0.02em] text-fg">
+                                        {s.value}
+                                    </dt>
+                                    <dd className="mt-0.5 text-xs uppercase tracking-[0.14em] text-fg-subtle">
+                                        {s.label}
+                                    </dd>
+                                </div>
+                            ))}
+                        </dl>
+                    </Reveal>
+                ) : null}
+            </Container>
         </section>
     );
 }
