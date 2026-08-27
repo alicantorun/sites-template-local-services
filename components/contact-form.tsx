@@ -12,8 +12,8 @@ import { useContact } from "@/lib/hooks/use-contact";
 // second enquiry. A success REPLACES the form, because a form still sitting there full of text is
 // read as "it did not send". Conflating any two of these is how a site quietly loses leads.
 const field =
-    "w-full border border-neutral-700 bg-neutral-800 px-4 py-3 text-sm text-white " +
-    "placeholder:text-neutral-500 focus:border-brand focus:outline-none";
+    "w-full border border-line bg-fg px-4 py-3 text-sm text-surface " +
+    "placeholder:text-fg-muted focus:border-brand focus:outline-none";
 
 export function ContactForm() {
     const contact = useContact();
@@ -22,17 +22,17 @@ export function ContactForm() {
         return (
             <div
                 role="status"
-                className="border border-neutral-700 bg-neutral-800 px-6 py-8 text-sm text-neutral-200"
+                className="border border-line bg-fg px-6 py-8 text-sm text-surface/70"
             >
-                <p className="text-base font-semibold text-white">Thanks, that reached us.</p>
-                <p className="mt-2 text-neutral-400">
+                <p className="text-base font-semibold text-fg">Thanks, that reached us.</p>
+                <p className="mt-2 text-fg-subtle">
                     We reply the same working day. If it cannot wait that long, call the number
                     above.
                 </p>
                 <button
                     type="button"
                     onClick={() => contact.reset()}
-                    className="mt-4 text-xs font-medium text-neutral-300 underline underline-offset-4 hover:text-white"
+                    className="mt-4 text-xs font-medium text-fg-subtle underline underline-offset-4 hover:text-fg"
                 >
                     Send another
                 </button>
@@ -62,7 +62,7 @@ export function ContactForm() {
                 // for people who happen to be looking at this part of the page.
                 <p
                     role="alert"
-                    className="border border-red-400/40 bg-red-950/40 px-4 py-3 text-sm text-red-200"
+                    className="border border-line bg-surface-2 px-4 py-3 text-sm text-fg"
                 >
                     {contact.error.message}
                 </p>
@@ -70,7 +70,7 @@ export function ContactForm() {
 
             <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                    <label htmlFor="name" className="text-xs font-medium text-neutral-400">
+                    <label htmlFor="name" className="text-xs font-medium text-fg-subtle">
                         Your name
                     </label>
                     <input
@@ -82,7 +82,7 @@ export function ContactForm() {
                     />
                 </div>
                 <div>
-                    <label htmlFor="email" className="text-xs font-medium text-neutral-400">
+                    <label htmlFor="email" className="text-xs font-medium text-fg-subtle">
                         Email
                     </label>
                     <input
@@ -97,8 +97,8 @@ export function ContactForm() {
             </div>
 
             <div>
-                <label htmlFor="phone" className="text-xs font-medium text-neutral-400">
-                    Phone <span className="text-neutral-600">(optional)</span>
+                <label htmlFor="phone" className="text-xs font-medium text-fg-subtle">
+                    Phone <span className="text-fg-muted">(optional)</span>
                 </label>
                 <input
                     id="phone"
@@ -110,7 +110,7 @@ export function ContactForm() {
             </div>
 
             <div>
-                <label htmlFor="message" className="text-xs font-medium text-neutral-400">
+                <label htmlFor="message" className="text-xs font-medium text-fg-subtle">
                     The job, and your postcode
                 </label>
                 <textarea
@@ -137,7 +137,7 @@ export function ContactForm() {
             <button
                 type="submit"
                 disabled={contact.isPending}
-                className="rounded-full border border-neutral-600 px-6 py-3 text-sm font-semibold text-neutral-100 transition-colors hover:border-white disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-full border border-line px-6 py-3 text-sm font-semibold text-fg-subtle transition-colors hover:border-line disabled:cursor-not-allowed disabled:opacity-50"
             >
                 {contact.isPending ? "Sending…" : "Send enquiry"}
             </button>
